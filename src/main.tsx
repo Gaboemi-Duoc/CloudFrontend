@@ -7,11 +7,11 @@ import { oidcConfig } from "./auth";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <AuthProvider {...oidcConfig}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </AuthProvider>
-  </React.StrictMode>
+	<React.StrictMode>
+		<AuthProvider {...oidcConfig}>
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
+		</AuthProvider>
+	</React.StrictMode>,
 );

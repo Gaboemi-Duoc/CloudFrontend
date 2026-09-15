@@ -7,10 +7,10 @@ const redirectUri = import.meta.env.VITE_COGNITO_REDIRECT_URI;
 const logoutUri = import.meta.env.VITE_COGNITO_LOGOUT_URI ?? redirectUri;
 
 if (!authority || !clientId || !redirectUri) {
-  // eslint-disable-next-line no-console
-  console.warn(
-    "[auth] Missing Cognito env vars. Copy .env.example to .env.local and fill them in."
-  );
+	// eslint-disable-next-line no-console
+	console.warn(
+		"[auth] Missing Cognito env vars. Copy .env.example to .env.local and fill them in.",
+	);
 }
 
 /**
@@ -18,14 +18,14 @@ if (!authority || !clientId || !redirectUri) {
  * authorize/token/jwks endpoints from the .well-known config.
  */
 export const oidcConfig: AuthProviderProps = {
-  authority,
-  client_id: clientId,
-  redirect_uri: redirectUri,
-  post_logout_redirect_uri: logoutUri,
-  response_type: "code",
-  scope: "openid email",
-  automaticSilentRenew: true,
-  userStore: new WebStorageStateStore({ store: window.localStorage }),
+	authority,
+	client_id: clientId,
+	redirect_uri: redirectUri,
+	post_logout_redirect_uri: logoutUri,
+	response_type: "code",
+	scope: "openid email",
+	automaticSilentRenew: true,
+	userStore: new WebStorageStateStore({ store: window.localStorage }),
 };
 
 /**
@@ -35,12 +35,12 @@ export const oidcConfig: AuthProviderProps = {
  * If you already have the Hosted UI domain, put it in an env var instead.
  */
 export function cognitoLogoutUrl(): string {
-  const region = authority?.split(".")[1] ?? "us-east-1";
-  const domain = import.meta.env.VITE_COGNITO_HOSTED_UI_DOMAIN ?? "";
-  if (!domain) return redirectUri;
-  const params = new URLSearchParams({
-    client_id: clientId,
-    logout_uri: logoutUri,
-  });
-  return `https://${domain}.auth.${region}.amazoncognito.com/logout?${params.toString()}`;
+	const region = authority?.split(".")[1] ?? "us-east-1";
+	const domain = import.meta.env.VITE_COGNITO_HOSTED_UI_DOMAIN ?? "";
+	if (!domain) return redirectUri;
+	const params = new URLSearchParams({
+		client_id: clientId,
+		logout_uri: logoutUri,
+	});
+	return `https://${domain}.auth.${region}.amazoncognito.com/logout?${params.toString()}`;
 }
