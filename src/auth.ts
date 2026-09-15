@@ -34,10 +34,8 @@ export const oidcConfig: AuthProviderProps = {
  *   → https://<domain>.auth.<region>.amazoncognito.com/logout
  * If you already have the Hosted UI domain, put it in an env var instead.
  */
-export function cognitoLogoutUrl(idToken: string): string {
+export function cognitoLogoutUrl(): string {
   const region = authority?.split(".")[1] ?? "us-east-1";
-  // Fallback: sign out locally if you don't have a Hosted UI domain configured.
-  // Replace the domain below with your actual Cognito Hosted UI domain.
   const domain = import.meta.env.VITE_COGNITO_HOSTED_UI_DOMAIN ?? "";
   if (!domain) return redirectUri;
   const params = new URLSearchParams({

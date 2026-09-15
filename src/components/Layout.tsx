@@ -1,19 +1,17 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import { cognitoLogoutUrl } from "../auth";
 
 export default function Layout() {
   const auth = useAuth();
-  const nav = useNavigate();
   const groups: string[] = (auth.user?.profile["cognito:groups"] as string[]) ?? [];
 
-  const handleLogout = () => {
-    const idToken = auth.user?.id_token ?? "";
-    const url = cognitoLogoutUrl(idToken);
-    auth.removeUser().finally(() => {
-      window.location.href = url;
-    });
-  };
+const handleLogout = () => {
+  const url = cognitoLogoutUrl();
+  auth.removeUser().finally(() => {
+    window.location.href = url;
+  });
+};
 
   return (
     <div className="app">
