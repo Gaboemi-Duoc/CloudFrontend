@@ -9,10 +9,10 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       proxy: {
         "/api": {
-          target: env.BACKEND_URL ?? "http://localhost:8080",
+          target: env.VITE_BACKEND_URL ?? "http://localhost:8080",
           changeOrigin: true,
           headers: {
-            "X-Secret-Gateway": env.GATEWAY_SECRET ?? "secreto_local",
+            "X-Secret-Gateway": env.VITE_GATEWAY_SECRET ?? "secreto_local",
           },
         },
       },

@@ -1,10 +1,10 @@
 import type { AuthProviderProps } from "react-oidc-context";
 import { WebStorageStateStore } from "oidc-client-ts";
 
-const authority = import.meta.env.COGNITO_AUTHORITY;
-const clientId = import.meta.env.COGNITO_CLIENT_ID;
-const redirectUri = import.meta.env.COGNITO_REDIRECT_URI;
-const logoutUri = import.meta.env.COGNITO_LOGOUT_URI ?? redirectUri;
+const authority = import.meta.env.VITE_COGNITO_AUTHORITY;
+const clientId = import.meta.env.VITE_COGNITO_CLIENT_ID;
+const redirectUri = import.meta.env.VITE_COGNITO_REDIRECT_URI;
+const logoutUri = import.meta.env.VITE_COGNITO_LOGOUT_URI ?? redirectUri;
 
 if (!authority || !clientId || !redirectUri) {
   // eslint-disable-next-line no-console
@@ -36,7 +36,7 @@ export const oidcConfig: AuthProviderProps = {
  */
 export function cognitoLogoutUrl(): string {
   const region = authority?.split(".")[1] ?? "us-east-1";
-  const domain = import.meta.env.COGNITO_HOSTED_UI_DOMAIN ?? "";
+  const domain = import.meta.env.VITE_COGNITO_HOSTED_UI_DOMAIN ?? "";
   if (!domain) return redirectUri;
   const params = new URLSearchParams({
     client_id: clientId,

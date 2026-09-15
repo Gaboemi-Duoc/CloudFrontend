@@ -1,6 +1,6 @@
 import type { Course, Enrollment, Me, Task } from "./types";
 
-const API_BASE = (import.meta.env.API_BASE_URL ?? "") + "/api";
+const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? "") + "/api";
 
 async function request<T>(path: string, token: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
