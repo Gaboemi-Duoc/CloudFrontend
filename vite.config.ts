@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
           target: env.VITE_BACKEND_URL ?? "http://localhost:8080",
           changeOrigin: true,
           headers: {
-            "X-Secret-Gateway": env.VITE_GATEWAY_SECRET ?? "secreto_local",
+            "X-Secret-Gateway": env.GATEWAY_SECRET ?? "secreto_local",
           },
         },
       },
