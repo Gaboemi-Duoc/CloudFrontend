@@ -15,7 +15,7 @@ export default function TeacherCourseDetail() {
 	const [studentEmail, setStudentEmail] = useState("");
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
-	const [dueDate, setdueDate] = useState("");
+	const [dueDate, setDueDate] = useState(""); // Fixed capitalization
 	const [error, setError] = useState<string | null>(null);
 
 	const reload = async () => {
@@ -46,11 +46,11 @@ export default function TeacherCourseDetail() {
 			await api.teacherCreateTask(token, courseId, {
 				title,
 				description,
-				due_date: dueDate || undefined,
+				dueDate: dueDate || undefined, // FIXED: Changed due_date to dueDate
 			});
 			setTitle("");
 			setDescription("");
-			setdueDate("");
+			setDueDate(""); // Fixed capitalization
 			void reload();
 		} catch (e) {
 			setError(e instanceof Error ? e.message : String(e));
@@ -80,6 +80,7 @@ export default function TeacherCourseDetail() {
 				</form>
 				<ul>
 					{students.map((s) => (
+						// NOTE: s.student_id is correct here because it's READING data from the API
 						<li key={s.id}>{s.student_id}</li>
 					))}
 					{students.length === 0 && <li>No students enrolled.</li>}
@@ -108,7 +109,7 @@ export default function TeacherCourseDetail() {
 					<input
 						type="date"
 						value={dueDate}
-						onChange={(e) => setdueDate(e.target.value)}
+						onChange={(e) => setDueDate(e.target.value)} // Fixed capitalization
 					/>
 					<button type="submit">Create</button>
 				</form>
@@ -120,6 +121,7 @@ export default function TeacherCourseDetail() {
 					{tasks.map((t) => (
 						<li key={t.id}>
 							<b>{t.title}</b>
+							{/* NOTE: t.due_date is correct here because it's READING from the API */}
 							{t.due_date ? ` — due ${t.due_date}` : ""}
 							{t.description && <div className="muted">{t.description}</div>}
 						</li>

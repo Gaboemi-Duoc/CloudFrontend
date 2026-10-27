@@ -33,23 +33,23 @@ export const api = {
 	adminListCourses: (t: string) => request<Course[]>("/admin/courses", t),
 	adminCreateCourse: (
 		t: string,
-		body: { name: string; description?: string; teacher_id: string },
+		body: { name: string; description?: string; teacherId: string },
 	) =>
 		request<Course>("/admin/courses", t, {
 			method: "POST",
 			body: JSON.stringify(body),
 		}),
-	adminAssignTeacher: (t: string, id: number, teacher_id: string) =>
+	adminAssignTeacher: (t: string, id: number, teacherId: string) =>
 		request<Course>(`/admin/courses/${id}/teacher`, t, {
 			method: "PUT",
-			body: JSON.stringify({ teacher_id }),
+			body: JSON.stringify({ teacherId }),
 		}),
 	adminDeleteCourse: (t: string, id: number) =>
 		request<void>(`/admin/courses/${id}`, t, { method: "DELETE" }),
-	adminEnrollStudent: (t: string, id: number, student_id: string) =>
+	adminEnrollStudent: (t: string, id: number, studentId: string) =>
 		request<Enrollment>(`/admin/courses/${id}/enrollments`, t, {
 			method: "POST",
-			body: JSON.stringify({ student_id }),
+			body: JSON.stringify({ studentId }),
 		}),
 	adminListStudents: (t: string, id: number) =>
 		request<Enrollment[]>(`/admin/courses/${id}/students`, t),
@@ -63,16 +63,16 @@ export const api = {
 	teacherCreateTask: (
 		t: string,
 		id: number,
-		body: { title: string; description?: string; due_date?: string },
+		body: { title: string; description?: string; dueDate?: string },
 	) =>
 		request<Task>(`/teacher/courses/${id}/tasks`, t, {
 			method: "POST",
 			body: JSON.stringify(body),
 		}),
-	teacherEnrollStudent: (t: string, id: number, student_id: string) =>
+	teacherEnrollStudent: (t: string, id: number, studentId: string) =>
 		request<Enrollment>(`/teacher/courses/${id}/enrollments`, t, {
 			method: "POST",
-			body: JSON.stringify({ student_id }),
+			body: JSON.stringify({ studentId }),
 		}),
 
 	// --- Student ---
