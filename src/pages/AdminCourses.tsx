@@ -13,7 +13,7 @@ export default function AdminCourses() {
 
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const [teacher_id, setteacher_id] = useState("");
+	const [teacherId, setteacherId] = useState("");
 	const [studentEmail, setStudentEmail] = useState("");
 
 	const load = () =>
@@ -28,10 +28,10 @@ export default function AdminCourses() {
 
 	const onCreate = async () => {
 		try {
-			await api.adminCreateCourse(token, { name, description, teacher_id });
+			await api.adminCreateCourse(token, { name, description, teacherId });
 			setName("");
 			setDescription("");
-			setteacher_id("");
+			setteacherId("");
 			load();
 		} catch (e) {
 			setError(e instanceof Error ? e.message : String(e));
@@ -87,8 +87,8 @@ export default function AdminCourses() {
 				/>
 				<input
 					placeholder="Teacher email (Cognito)"
-					value={teacher_id}
-					onChange={(e) => setteacher_id(e.target.value)}
+					value={teacherId}
+					onChange={(e) => setteacherId(e.target.value)}
 					required
 				/>
 				<button type="submit">Create</button>

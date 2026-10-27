@@ -6,7 +6,7 @@ import type { Enrollment, Task } from "../types";
 
 export default function TeacherCourseDetail() {
 	const { id } = useParams<{ id: string }>();
-	const course_id = Number(id);
+	const courseId = Number(id);
 	const auth = useAuth();
 	const token = auth.user?.id_token ?? "";
 
@@ -15,25 +15,25 @@ export default function TeacherCourseDetail() {
 	const [studentEmail, setStudentEmail] = useState("");
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
-	const [due_date, setdue_date] = useState("");
+	const [dueDate, setdueDate] = useState("");
 	const [error, setError] = useState<string | null>(null);
 
 	const reload = async () => {
 		try {
-			setStudents(await api.teacherStudents(token, course_id));
-			setTasks(await api.teacherTasks(token, course_id));
+			setStudents(await api.teacherStudents(token, courseId));
+			setTasks(await api.teacherTasks(token, courseId));
 		} catch (e) {
 			setError(e instanceof Error ? e.message : String(e));
 		}
 	};
 
 	useEffect(() => {
-		if (token && course_id) void reload();
-	}, [token, course_id]);
+		if (token && courseId) void reload();
+	}, [token, courseId]);
 
 	const onEnroll = async () => {
 		try {
-			await api.teacherEnrollStudent(token, course_id, studentEmail);
+			await api.teacherEnrollStudent(token, courseId, studentEmail);
 			setStudentEmail("");
 			void reload();
 		} catch (e) {
@@ -43,14 +43,14 @@ export default function TeacherCourseDetail() {
 
 	const onCreateTask = async () => {
 		try {
-			await api.teacherCreateTask(token, course_id, {
+			await api.teacherCreateTask(token, courseId, {
 				title,
 				description,
-				due_date: due_date || undefined,
+				due_date: dueDate || undefined,
 			});
 			setTitle("");
 			setDescription("");
-			setdue_date("");
+			setdueDate("");
 			void reload();
 		} catch (e) {
 			setError(e instanceof Error ? e.message : String(e));
@@ -59,7 +59,7 @@ export default function TeacherCourseDetail() {
 
 	return (
 		<section>
-			<h1>Course #{course_id}</h1>
+			<h1>Course #{courseId}</h1>
 			{error && <p className="error">{error}</p>}
 
 			<div className="card">
@@ -107,8 +107,8 @@ export default function TeacherCourseDetail() {
 					/>
 					<input
 						type="date"
-						value={due_date}
-						onChange={(e) => setdue_date(e.target.value)}
+						value={dueDate}
+						onChange={(e) => setdueDate(e.target.value)}
 					/>
 					<button type="submit">Create</button>
 				</form>
