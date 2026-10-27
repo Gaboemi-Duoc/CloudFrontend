@@ -16,6 +16,10 @@ export default function AdminCourses() {
 	const [teacherId, setTeacherId] = useState("");
 	const [studentEmail, setStudentEmail] = useState("");
 
+	// --- Report Generation State ---
+	const [generating, setGenerating] = useState(false);
+	const [reportMsg, setReportMsg] = useState("");
+
 	const load = () =>
 		api
 			.adminListCourses(token)
@@ -61,10 +65,37 @@ export default function AdminCourses() {
 		}
 	};
 
+	// --- Report Generation Handler ---
+	const onGenerateReport = async () => {
+		try {
+			setGenerating(true);
+			setReportMsg("Generating report...");
+			const res = await api.adminGenerateReport(token);
+			setReportMsg(`✅ ${res.message} (ID: ${res.reportId}). Check notifications!`);
+		} catch (e) {
+			setReportMsg(`❌ Error: ${e instanceof Error ? e.message : String(e)}`);
+		} finally {
+			setGenerating(false);
+		}
+	};
+
 	return (
 		<section>
 			<h1>Admin · Courses</h1>
 			{error && <p className="error">{error}</p>}
+
+			{/* --- REPORT GENERATION UI --- */}
+			<div className="card" style={{ marginBottom: "1.5rem", backgroundColor: "#f8f9fa" }}>
+				<h3>Analytics & Reports</h3>
+				<button 
+					onClick={onGenerateReport} 
+					disabled={generating}
+					style={{ marginTop: "0.5rem" }}
+				>
+					{generating ? "Generating..." : "Generate Course Report"}
+				</button>
+				{reportMsg && <p style={{ marginTop: "0.5rem", fontSize: "0.9em" }}>{reportMsg}</p>}
+			</div>
 
 			<form
 				className="card"
