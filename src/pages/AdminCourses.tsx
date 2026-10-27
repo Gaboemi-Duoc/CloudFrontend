@@ -13,7 +13,7 @@ export default function AdminCourses() {
 
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const [teacherId, setTeacherId] = useState("");
+	const [teacher_id, setteacher_id] = useState("");
 	const [studentEmail, setStudentEmail] = useState("");
 
 	const load = () =>
@@ -28,10 +28,10 @@ export default function AdminCourses() {
 
 	const onCreate = async () => {
 		try {
-			await api.adminCreateCourse(token, { name, description, teacherId });
+			await api.adminCreateCourse(token, { name, description, teacher_id });
 			setName("");
 			setDescription("");
-			setTeacherId("");
+			setteacher_id("");
 			load();
 		} catch (e) {
 			setError(e instanceof Error ? e.message : String(e));
@@ -87,8 +87,8 @@ export default function AdminCourses() {
 				/>
 				<input
 					placeholder="Teacher email (Cognito)"
-					value={teacherId}
-					onChange={(e) => setTeacherId(e.target.value)}
+					value={teacher_id}
+					onChange={(e) => setteacher_id(e.target.value)}
 					required
 				/>
 				<button type="submit">Create</button>
@@ -108,7 +108,7 @@ export default function AdminCourses() {
 						<tr key={c.id}>
 							<td>{c.id}</td>
 							<td>{c.name}</td>
-							<td>{c.teacherId}</td>
+							<td>{c.teacher_id}</td>
 							<td>
 								<button onClick={() => onSelect(c.id)}>Students</button>{" "}
 								<button onClick={() => onDelete(c.id)}>Delete</button>
@@ -137,7 +137,7 @@ export default function AdminCourses() {
 					</form>
 					<ul>
 						{students.map((s) => (
-							<li key={s.id}>{s.studentId}</li>
+							<li key={s.id}>{s.student_id}</li>
 						))}
 					</ul>
 				</div>

@@ -6,7 +6,7 @@ import type { Enrollment, Task } from "../types";
 
 export default function TeacherCourseDetail() {
 	const { id } = useParams<{ id: string }>();
-	const courseId = Number(id);
+	const course_id = Number(id);
 	const auth = useAuth();
 	const token = auth.user?.id_token ?? "";
 
@@ -15,25 +15,25 @@ export default function TeacherCourseDetail() {
 	const [studentEmail, setStudentEmail] = useState("");
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
-	const [dueDate, setDueDate] = useState("");
+	const [due_date, setdue_date] = useState("");
 	const [error, setError] = useState<string | null>(null);
 
 	const reload = async () => {
 		try {
-			setStudents(await api.teacherStudents(token, courseId));
-			setTasks(await api.teacherTasks(token, courseId));
+			setStudents(await api.teacherStudents(token, course_id));
+			setTasks(await api.teacherTasks(token, course_id));
 		} catch (e) {
 			setError(e instanceof Error ? e.message : String(e));
 		}
 	};
 
 	useEffect(() => {
-		if (token && courseId) void reload();
-	}, [token, courseId]);
+		if (token && course_id) void reload();
+	}, [token, course_id]);
 
 	const onEnroll = async () => {
 		try {
-			await api.teacherEnrollStudent(token, courseId, studentEmail);
+			await api.teacherEnrollStudent(token, course_id, studentEmail);
 			setStudentEmail("");
 			void reload();
 		} catch (e) {
@@ -43,14 +43,14 @@ export default function TeacherCourseDetail() {
 
 	const onCreateTask = async () => {
 		try {
-			await api.teacherCreateTask(token, courseId, {
+			await api.teacherCreateTask(token, course_id, {
 				title,
 				description,
-				dueDate: dueDate || undefined,
+				due_date: due_date || undefined,
 			});
 			setTitle("");
 			setDescription("");
-			setDueDate("");
+			setdue_date("");
 			void reload();
 		} catch (e) {
 			setError(e instanceof Error ? e.message : String(e));
@@ -59,7 +59,7 @@ export default function TeacherCourseDetail() {
 
 	return (
 		<section>
-			<h1>Course #{courseId}</h1>
+			<h1>Course #{course_id}</h1>
 			{error && <p className="error">{error}</p>}
 
 			<div className="card">
@@ -80,7 +80,7 @@ export default function TeacherCourseDetail() {
 				</form>
 				<ul>
 					{students.map((s) => (
-						<li key={s.id}>{s.studentId}</li>
+						<li key={s.id}>{s.student_id}</li>
 					))}
 					{students.length === 0 && <li>No students enrolled.</li>}
 				</ul>
@@ -107,8 +107,8 @@ export default function TeacherCourseDetail() {
 					/>
 					<input
 						type="date"
-						value={dueDate}
-						onChange={(e) => setDueDate(e.target.value)}
+						value={due_date}
+						onChange={(e) => setdue_date(e.target.value)}
 					/>
 					<button type="submit">Create</button>
 				</form>
@@ -120,7 +120,7 @@ export default function TeacherCourseDetail() {
 					{tasks.map((t) => (
 						<li key={t.id}>
 							<b>{t.title}</b>
-							{t.dueDate ? ` — due ${t.dueDate}` : ""}
+							{t.due_date ? ` — due ${t.due_date}` : ""}
 							{t.description && <div className="muted">{t.description}</div>}
 						</li>
 					))}

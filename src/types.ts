@@ -8,23 +8,23 @@ export interface Course {
 	id: number;
 	name: string;
 	description?: string;
-	teacherId: string;
-	createdAt: string;
+	teacher_id: string;
+	created_at: string;
 }
 
 export interface Task {
 	id: number;
-	courseId: number;
+	course_id: number;
 	title: string;
 	description?: string;
-	dueDate?: string;
-	createdAt: string;
+	due_date?: string;
+	created_at: string;
 }
 
 export interface Enrollment {
 	id: number;
-	courseId: number;
-	courseName: string;
-	studentId: string;
-	createdAt: string;
+	course_id: number;
+	course_name: string; // Ensure your Lambda uses 'c.name AS course_name'
+	student_id: string;
+	created_at: string;
 }

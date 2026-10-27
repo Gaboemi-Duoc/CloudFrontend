@@ -44,7 +44,7 @@ export default function StudentDashboard() {
 				<ul>
 					{mine.map((c) => (
 						<li key={c.id}>
-							#{c.id} — {c.name} <span className="muted">({c.teacherId})</span>
+							#{c.id} — {c.name} <span className="muted">({c.teacher_id})</span>
 						</li>
 					))}
 					{mine.length === 0 && <li>Not enrolled in any course yet.</li>}
@@ -69,8 +69,8 @@ export default function StudentDashboard() {
 				<ul>
 					{tasks.map((t) => (
 						<li key={t.id}>
-							<b>{t.title}</b> (course #{t.courseId})
-							{t.dueDate ? ` — due ${t.dueDate}` : ""}
+							<b>{t.title}</b> (course #{t.course_id})
+							{t.due_date ? ` — due ${t.due_date}` : ""}
 							{t.description && <div className="muted">{t.description}</div>}
 						</li>
 					))}

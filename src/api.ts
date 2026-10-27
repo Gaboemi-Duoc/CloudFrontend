@@ -1,6 +1,7 @@
 import type { Course, Enrollment, Me, Task } from "./types";
 
 const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? "") + "/api";
+const GATEWAY_SECRET = import.meta.env.VITE_GATEWAY_SECRET; 
 
 async function request<T>(
 	path: string,
@@ -12,6 +13,7 @@ async function request<T>(
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${token}`,
+			...(GATEWAY_SECRET ? { "x-secret-gateway": GATEWAY_SECRET } : {}),
 			...(init?.headers ?? {}),
 		},
 	});
@@ -31,23 +33,23 @@ export const api = {
 	adminListCourses: (t: string) => request<Course[]>("/admin/courses", t),
 	adminCreateCourse: (
 		t: string,
-		body: { name: string; description?: string; teacherId: string },
+		body: { name: string; description?: string; teacher_id: string },
 	) =>
 		request<Course>("/admin/courses", t, {
 			method: "POST",
 			body: JSON.stringify(body),
 		}),
-	adminAssignTeacher: (t: string, id: number, teacherId: string) =>
+	adminAssignTeacher: (t: string, id: number, teacher_id: string) =>
 		request<Course>(`/admin/courses/${id}/teacher`, t, {
 			method: "PUT",
-			body: JSON.stringify({ teacherId }),
+			body: JSON.stringify({ teacher_id }),
 		}),
 	adminDeleteCourse: (t: string, id: number) =>
 		request<void>(`/admin/courses/${id}`, t, { method: "DELETE" }),
-	adminEnrollStudent: (t: string, id: number, studentId: string) =>
+	adminEnrollStudent: (t: string, id: number, student_id: string) =>
 		request<Enrollment>(`/admin/courses/${id}/enrollments`, t, {
 			method: "POST",
-			body: JSON.stringify({ studentId }),
+			body: JSON.stringify({ student_id }),
 		}),
 	adminListStudents: (t: string, id: number) =>
 		request<Enrollment[]>(`/admin/courses/${id}/students`, t),
@@ -61,16 +63,16 @@ export const api = {
 	teacherCreateTask: (
 		t: string,
 		id: number,
-		body: { title: string; description?: string; dueDate?: string },
+		body: { title: string; description?: string; due_date?: string },
 	) =>
 		request<Task>(`/teacher/courses/${id}/tasks`, t, {
 			method: "POST",
 			body: JSON.stringify(body),
 		}),
-	teacherEnrollStudent: (t: string, id: number, studentId: string) =>
+	teacherEnrollStudent: (t: string, id: number, student_id: string) =>
 		request<Enrollment>(`/teacher/courses/${id}/enrollments`, t, {
 			method: "POST",
-			body: JSON.stringify({ studentId }),
+			body: JSON.stringify({ student_id }),
 		}),
 
 	// --- Student ---
