@@ -35,7 +35,9 @@ export default function TeacherCourseDetail() {
 		try {
 			await api.teacherEnrollStudent(token, courseId, studentEmail);
 			setStudentEmail("");
-			void reload();
+			setTimeout(() => {
+				void reload();
+			}, 1500);
 		} catch (e) {
 			setError(e instanceof Error ? e.message : String(e));
 		}
@@ -51,7 +53,9 @@ export default function TeacherCourseDetail() {
 			setTitle("");
 			setDescription("");
 			setDueDate(""); // Fixed capitalization
-			void reload();
+			setTimeout(() => {
+				void reload();
+			}, 1500);
 		} catch (e) {
 			setError(e instanceof Error ? e.message : String(e));
 		}

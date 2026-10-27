@@ -28,7 +28,7 @@ export default function StudentDashboard() {
 	const enroll = async (id: number) => {
 		try {
 			await api.studentEnroll(token, id);
-			reload();
+			setTimeout(() => reload(), 1500);
 		} catch (e: any) {
 			setError(e.message);
 		}

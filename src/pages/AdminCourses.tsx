@@ -36,7 +36,7 @@ export default function AdminCourses() {
 			setName("");
 			setDescription("");
 			setTeacherId("");
-			load();
+			setTimeout(() => load(), 1500); 
 		} catch (e) {
 			setError(e instanceof Error ? e.message : String(e));
 		}
@@ -51,7 +51,7 @@ export default function AdminCourses() {
 		if (!confirm("Delete this course?")) return;
 		await api.adminDeleteCourse(token, id);
 		if (selected === id) setSelected(null);
-		load();
+		setTimeout(() => load(), 1500);
 	};
 
 	const onEnroll = async () => {
