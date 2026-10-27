@@ -70,8 +70,8 @@ export default function AdminCourses() {
 		try {
 			setGenerating(true);
 			setReportMsg("Generating report...");
-			const res = await api.adminGenerateReport(token);
-			setReportMsg(`✅ ${res.message} (ID: ${res.reportId}). Check notifications!`);
+			await api.adminGenerateReport(token);
+			setReportMsg(`✅ Report generation initiated! Check notifications in a few seconds.`);
 		} catch (e) {
 			setReportMsg(`❌ Error: ${e instanceof Error ? e.message : String(e)}`);
 		} finally {

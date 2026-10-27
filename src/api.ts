@@ -55,9 +55,9 @@ export const api = {
 		request<Enrollment[]>(`/admin/courses/${id}/students`, t),
 	// Add to the Admin section
 	adminGenerateReport: (t: string) =>
-	request<{ message: string; reportId: number; data: any[] }>("/admin/reports/generate", t, {
-		method: "POST",
-	}),
+		request<void>("/admin/reports/generate", t, {
+			method: "POST",
+		}),
 	// --- Teacher ---
 	teacherMyCourses: (t: string) => request<Course[]>("/teacher/courses", t),
 	teacherStudents: (t: string, id: number) =>
