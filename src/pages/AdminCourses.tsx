@@ -49,9 +49,14 @@ export default function AdminCourses() {
 
 	const onDelete = async (id: number) => {
 		if (!confirm("Delete this course?")) return;
-		await api.adminDeleteCourse(token, id);
-		if (selected === id) setSelected(null);
-		setTimeout(() => load(), 1500);
+		try {
+			await api.adminDeleteCourse(token, id);
+			if (selected === id) setSelected(null);
+			setTimeout(() => load(), 1500);
+		} catch (e) {
+			setError(e instanceof Error ? e.message : String(e));
+			load(); // If it fails, reload the true state to bring it back
+		}
 	};
 
 	const onEnroll = async () => {
@@ -59,7 +64,9 @@ export default function AdminCourses() {
 		try {
 			await api.adminEnrollStudent(token, selected, studentEmail);
 			setStudentEmail("");
-			setStudents(await api.adminListStudents(token, selected));
+			setTimeout(async () => {
+				setStudents(await api.adminListStudents(token, selected));
+			}, 1500);
 		} catch (e) {
 			setError(e instanceof Error ? e.message : String(e));
 		}
