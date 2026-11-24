@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { api } from "../api";
-import type { Course, Enrollment } from "../types";
+import type { Course, Enrollment, Payment } from "../types";
 
 export default function AdminCourses() {
 	const auth = useAuth();
@@ -16,15 +16,13 @@ export default function AdminCourses() {
 	const [teacherId, setTeacherId] = useState("");
 	const [studentEmail, setStudentEmail] = useState("");
 
-	// --- Report Generation State ---
 	const [generating, setGenerating] = useState(false);
 	const [reportMsg, setReportMsg] = useState("");
+	const [payments, setPayments] = useState<Payment[]>([]);
 
 	const load = () =>
-		api
-			.adminListCourses(token)
-			.then(setCourses)
-			.catch((e) => setError(e.message));
+		api.adminListCourses(token).then(setCourses).catch((e) => setError(e.message));
+		api.adminListPayments(token).then(setPayments).catch(() => {});
 
 	useEffect(() => {
 		if (token) load();
@@ -92,16 +90,45 @@ export default function AdminCourses() {
 			{error && <p className="error">{error}</p>}
 
 			{/* --- REPORT GENERATION UI --- */}
-			<div className="card" style={{ marginBottom: "1.5rem", backgroundColor: "#f8f9fa" }}>
-				<h3>Analytics & Reports</h3>
-				<button 
-					onClick={onGenerateReport} 
-					disabled={generating}
-					style={{ marginTop: "0.5rem" }}
-				>
-					{generating ? "Generating..." : "Generate Course Report"}
-				</button>
+			<div className="card" style={{ marginBottom: "1.5rem" }}>
+				<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+					<h3 style={{ margin: 0 }}>💸 Recent payments (Kafka stream)</h3>
+					<div>
+						<button onClick={() => load()} style={{ marginRight: "0.5rem" }}>
+							Refresh
+						</button>
+						<button onClick={onGenerateReport} disabled={generating}>
+							{generating ? "Generating…" : "Generate Report"}
+						</button>
+					</div>
+				</div>
 				{reportMsg && <p style={{ marginTop: "0.5rem", fontSize: "0.9em" }}>{reportMsg}</p>}
+
+				<table style={{ marginTop: "0.75rem" }}>
+					<thead>
+						<tr>
+							<th>Payment</th>
+							<th>Student</th>
+							<th>Course</th>
+							<th>Amount</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						{payments.map((p) => (
+							<tr key={p.id}>
+								<td><code>{p.id.slice(0, 8)}…</code></td>
+								<td>{p.student_id}</td>
+								<td>{p.course_name}</td>
+								<td>{(p.amount_cents / 100).toFixed(2)} {p.currency}</td>
+								<td>{p.status}</td>
+							</tr>
+						))}
+						{payments.length === 0 && (
+							<tr><td colSpan={5} className="muted">No payments yet.</td></tr>
+						)}
+					</tbody>
+				</table>
 			</div>
 
 			<form

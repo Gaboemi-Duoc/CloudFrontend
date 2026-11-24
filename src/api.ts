@@ -1,4 +1,4 @@
-import type { Course, Enrollment, Me, Task } from "./types";
+import type { Course, Enrollment, Me, Payment, Task } from "./types";
 
 const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? "") + "/api";
 const GATEWAY_SECRET = import.meta.env.VITE_GATEWAY_SECRET; 
@@ -53,11 +53,13 @@ export const api = {
 		}),
 	adminListStudents: (t: string, id: number) =>
 		request<Enrollment[]>(`/admin/courses/${id}/students`, t),
-	// Add to the Admin section
 	adminGenerateReport: (t: string) =>
 		request<void>("/admin/reports/generate", t, {
 			method: "POST",
 		}),
+	adminListPayments: (t: string) =>
+		request<Payment[]>("/admin/payments", t),
+
 	// --- Teacher ---
 	teacherMyCourses: (t: string) => request<Course[]>("/teacher/courses", t),
 	teacherStudents: (t: string, id: number) =>
@@ -88,4 +90,10 @@ export const api = {
 	studentTasksOfCourse: (t: string, id: number) =>
 		request<Task[]>(`/student/courses/${id}/tasks`, t),
 	studentAllTasks: (t: string) => request<Task[]>("/student/tasks", t),
+	studentPayForCourse: (t: string, id: number) =>
+	request<Payment>(`/student/courses/${id}/pay`, t, { method: "POST" }),
+	studentGetPayment: (t: string, paymentId: string) =>
+		request<Payment>(`/student/payments/${paymentId}`, t),
+	studentMyPayments: (t: string) =>
+		request<Payment[]>("/student/payments", t),
 };
